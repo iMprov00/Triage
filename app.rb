@@ -1,4 +1,4 @@
-require 'sinatra/flash'
+
 require 'sinatra'
 require 'sinatra/activerecord'
 # Подключение новых контроллеров
@@ -16,8 +16,19 @@ require_relative 'controllers/assessments_controller'
 # Конфигурация БД
 set :database, YAML.load(File.open('config/database.yml'))
 
+# Простой flash механизм
+helpers do
+  def flash
+    @flash ||= session.delete(:flash) || {}
+  end
+  
+  def set_flash(type, message)
+    session[:flash] ||= {}
+    session[:flash][type] = message
+  end
+end
+
 enable :sessions
-register Sinatra::Flash
 
 # Главная страница
 get '/' do

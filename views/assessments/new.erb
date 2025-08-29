@@ -76,6 +76,26 @@
         <label class="form-check-label">Острая боль не связанная со схватками (≥7 по ВАШ)</label>
       </div>
       
+      <div class="mb-3">
+        <label class="form-label">Интенсивность боли по ВАШ (0-10)</label>
+        <input type="number" class="form-control" name="assessment[acute_pain_severity]" min="0" max="10">
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[reduced_fetal_movement]" value="1">
+        <label class="form-check-label">Снижение двигательной активности плода</label>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[symptomatic]" value="1">
+        <label class="form-check-label">Симптомное АД (головная боль, нарушение зрения и т.д.)</label>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[uterine_scar]" value="1">
+        <label class="form-check-label">Рубец на матке</label>
+      </div>
+      
       <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" name="assessment[delivering_baby]" value="1">
         <label class="form-check-label">Рождающийся плод</label>
