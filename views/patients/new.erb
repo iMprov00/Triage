@@ -1,0 +1,31 @@
+<h1>Новый пациент</h1>
+
+<form action="/patients" method="post">
+  <div class="mb-3">
+    <label class="form-label">Фамилия</label>
+    <input type="text" class="form-control" name="patient[last_name]" required>
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">Имя</label>
+    <input type="text" class="form-control" name="patient[first_name]" required>
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">Отчество</label>
+    <input type="text" class="form-control" name="patient[middle_name]">
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">Дата рождения</label>
+    <input type="date" class="form-control" name="patient[birth_date]" required>
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">Дата поступления</label>
+    <input type="datetime-local" class="form-control" name="patient[admission_date]" required>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Сохранить</button>
+  <a href="/patients" class="btn btn-secondary">Отмена</a>
+</form>

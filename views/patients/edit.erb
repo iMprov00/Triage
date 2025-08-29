@@ -1,0 +1,33 @@
+<h1>Редактирование пациента</h1>
+
+<form action="/patients/<%= @patient.id %>" method="post">
+  <input type="hidden" name="_method" value="put">
+  
+  <div class="mb-3">
+    <label class="form-label">Фамилия</label>
+    <input type="text" class="form-control" name="patient[last_name]" value="<%= @patient.last_name %>" required>
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">Имя</label>
+    <input type="text" class="form-control" name="patient[first_name]" value="<%= @patient.first_name %>" required>
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">Отчество</label>
+    <input type="text" class="form-control" name="patient[middle_name]" value="<%= @patient.middle_name %>">
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">Дата рождения</label>
+    <input type="date" class="form-control" name="patient[birth_date]" value="<%= @patient.birth_date %>" required>
+  </div>
+  
+  <div class="mb-3">
+    <label class="form-label">Дата поступления</label>
+    <input type="datetime-local" class="form-control" name="patient[admission_date]" value="<%= @patient.admission_date.strftime('%Y-%m-%dT%H:%M') %>" required>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Сохранить</button>
+  <a href="/patients/<%= @patient.id %>" class="btn btn-secondary">Отмена</a>
+</form>

@@ -1,0 +1,158 @@
+<h1>Новое обследование для <%= "#{@patient.last_name} #{@patient.first_name} #{@patient.middle_name}" %></h1>
+
+<form action="/patients/<%= @patient.id %>/assessments" method="post">
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Основные показатели</h3>
+      
+      <div class="mb-3">
+        <label class="form-label">ЧСС матери</label>
+        <input type="number" class="form-control" name="assessment[heart_rate_mother]">
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">АД (систолическое/диастолическое)</label>
+        <input type="text" class="form-control" name="assessment[blood_pressure]" placeholder="120/80">
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">ЧД матери</label>
+        <input type="number" class="form-control" name="assessment[respiration_rate_mother]">
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">SPO2</label>
+        <input type="number" class="form-control" name="assessment[spo2]" min="0" max="100">
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Температура</label>
+        <input type="number" step="0.1" class="form-control" name="assessment[temperature]">
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Сознание</label>
+        <select class="form-select" name="assessment[consciousness]">
+          <option value="">-- Выберите --</option>
+          <option value="ясное">Ясное</option>
+          <option value="измененное">Измененное</option>
+          <option value="отсутствует">Отсутствует</option>
+        </select>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[convulsions]" value="1">
+        <label class="form-check-label">Судороги</label>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Кровянистые выделения</label>
+        <select class="form-select" name="assessment[bloody_discharge]">
+          <option value="">-- Выберите --</option>
+          <option value="нет">Нет</option>
+          <option value="мажущие">Мажущие</option>
+          <option value="штрихи">Штрихи</option>
+          <option value="умеренные">Умеренные (не мажущие, не штрихи)</option>
+          <option value="алые непрерывные">Алые непрерывные</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="col-md-6">
+      <h3>Показатели плода и другие</h3>
+      
+      <div class="mb-3">
+        <label class="form-label">ЧСС плода</label>
+        <input type="number" class="form-control" name="assessment[fetal_heart_rate]">
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[umbilical_cord_prolapse]" value="1">
+        <label class="form-check-label">Выпадение петель пуповины</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[acute_pain]" value="1">
+        <label class="form-check-label">Острая боль не связанная со схватками (≥7 по ВАШ)</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[delivering_baby]" value="1">
+        <label class="form-check-label">Рождающийся плод</label>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Срок гестации (недель)</label>
+        <input type="number" class="form-control" name="assessment[gestational_age]">
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[contractions]" value="1">
+        <label class="form-check-label">Схватки</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[irregular_contractions]" value="1">
+        <label class="form-check-label">Нерегулярные схватки</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[water_breakage]" value="1">
+        <label class="form-check-label">Воды отошли</label>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Положение/предлежание плода</label>
+        <input type="text" class="form-control" name="assessment[fetal_position]">
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[multiple_pregnancy]" value="1">
+        <label class="form-check-label">Многоплодие</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[hiv]" value="1">
+        <label class="form-check-label">ВИЧ</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[herpes]" value="1">
+        <label class="form-check-label">Герпес</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[placenta_previa]" value="1">
+        <label class="form-check-label">Предлежание плаценты</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[planned_cs]" value="1">
+        <label class="form-check-label">Запланированное кесарево сечение (мать или плод)</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[recent_trauma]" value="1">
+        <label class="form-check-label">Недавняя травма</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[requires_transfer]" value="1">
+        <label class="form-check-label">Клиническая ситуация требующая трансфера</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[normal_pregnancy_complaints]" value="1">
+        <label class="form-check-label">Жалобы нормальной беременности</label>
+      </div>
+      
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" name="assessment[no_complaints]" value="1">
+        <label class="form-check-label">Нет жалоб</label>
+      </div>
+    </div>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Сохранить обследование</button>
+  <a href="/patients/<%= @patient.id %>" class="btn btn-secondary">Отмена</a>
+</form>
