@@ -5,7 +5,8 @@ class PatientsController < Sinatra::Base
   end
 
   get '/patients' do
-    @patients = Patient.all
+    # Всегда загружаем всех пациентов, сортировка от новых к старым
+    @patients = Patient.all.order(created_at: :desc)
     erb :index
   end
 

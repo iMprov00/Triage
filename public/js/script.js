@@ -61,3 +61,24 @@ function calculatePriority(data) {
   // For now, it's a placeholder
   return 1
 }
+
+// Добавим в конец файла
+// Автофокус на поле поиска
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.querySelector('input[name="search"]');
+  if (searchInput && !searchInput.value) {
+    searchInput.focus();
+  }
+  
+  // Подсветка результатов поиска
+  if (window.location.search.includes('search=')) {
+    const searchTerm = new URLSearchParams(window.location.search).get('search').toLowerCase();
+    const tableCells = document.querySelectorAll('td');
+    
+    tableCells.forEach(cell => {
+      if (cell.textContent.toLowerCase().includes(searchTerm)) {
+        cell.classList.add('search-highlight');
+      }
+    });
+  }
+});

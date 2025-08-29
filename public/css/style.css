@@ -6,6 +6,8 @@
   --priority-5: #6c757d;
 }
 
+
+
 /* Priority badges */
 .priority-badge {
   font-size: 0.9rem;
@@ -145,4 +147,57 @@
   border-radius: 50%;
   display: inline-block;
   margin-right: 0.5rem;
+}
+
+/* Добавим в конец файла */
+.search-highlight {
+  background-color: #fff3cd;
+  font-weight: 600;
+}
+
+/* Улучшения для поисковой формы */
+.form-control:focus {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  .table th:nth-child(4),
+  .table td:nth-child(4) {
+    display: none;
+  }
+}
+
+/* Добавим в конец файла */
+.search-highlight {
+  background-color: #fff3cd !important;
+  transition: background-color 0.3s ease;
+}
+
+#searchInput {
+  transition: all 0.3s ease;
+}
+
+#searchInput:focus {
+  transform: scale(1.02);
+  box-shadow: 0 0 15px rgba(13, 110, 253, 0.2);
+}
+
+.patient-row {
+  transition: all 0.3s ease;
+}
+
+.patient-row:hover {
+  transform: translateX(5px);
+}
+
+/* Анимация для скрытия/показа строк */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.patient-row[style*="display: table-row"] {
+  animation: fadeIn 0.3s ease;
 }

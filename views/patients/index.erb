@@ -9,28 +9,58 @@
   </a>
 </div>
 
+<!-- Поиск по ФИО -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-8">
+        <input type="text" 
+               id="searchInput" 
+               class="form-control" 
+               placeholder="Поиск по ФИО (фамилия, имя, отчество)..."
+               onkeyup="filterPatients()">
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-outline-secondary" onclick="clearSearch()">
+          <i class="bi bi-x-circle me-1"></i>
+          Очистить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="card shadow-sm">
   <div class="card-body">
     <% if @patients.any? %>
+      <!-- Информация о результатах -->
+      <div class="alert alert-info mb-3 d-none" id="searchInfo">
+        <i class="bi bi-info-circle me-2"></i>
+        Найдено пациентов: <strong id="foundCount"><%= @patients.count %></strong>
+        из <strong id="totalCount"><%= @patients.count %></strong>
+      </div>
+
       <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table table-hover" id="patientsTable">
           <thead class="table-light">
             <tr>
               <th>ФИО</th>
               <th>Дата рождения</th>
               <th>Дата поступления</th>
+              <th>Дата добавления</th>
               <th>Обследования</th>
               <th class="text-end">Действия</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="patientsTableBody">
             <% @patients.each do |patient| %>
-              <tr class="align-middle">
+              <tr class="align-middle patient-row" data-fio="<%= "#{patient.last_name.downcase} #{patient.first_name.downcase} #{patient.middle_name.to_s.downcase}" %>">
                 <td>
                   <strong><%= "#{patient.last_name} #{patient.first_name} #{patient.middle_name}" %></strong>
                 </td>
                 <td><%= patient.birth_date.strftime('%d.%m.%Y') if patient.birth_date %></td>
                 <td><%= patient.admission_date.strftime('%d.%m.%Y %H:%M') if patient.admission_date %></td>
+                <td><%= patient.created_at.strftime('%d.%m.%Y %H:%M') if patient.created_at %></td>
                 <td>
                   <span class="badge bg-secondary"><%= patient.assessments.count %></span>
                 </td>
@@ -71,3 +101,54 @@
     <% end %>
   </div>
 </div>
+
+<script>
+// Функция фильтрации пациентов
+function filterPatients() {
+  const searchText = document.getElementById('searchInput').value.toLowerCase();
+  const rows = document.querySelectorAll('.patient-row');
+  const searchInfo = document.getElementById('searchInfo');
+  const foundCount = document.getElementById('foundCount');
+  const totalCount = document.getElementById('totalCount');
+  
+  let visibleCount = 0;
+  
+  rows.forEach(row => {
+    const fio = row.getAttribute('data-fio');
+    const isVisible = searchText === '' || fio.includes(searchText);
+    
+    row.style.display = isVisible ? '' : 'none';
+    if (isVisible) visibleCount++;
+  });
+  
+  // Показываем информацию о поиске
+  if (searchText !== '') {
+    searchInfo.classList.remove('d-none');
+    foundCount.textContent = visibleCount;
+    totalCount.textContent = rows.length;
+  } else {
+    searchInfo.classList.add('d-none');
+  }
+}
+
+// Функция очистки поиска
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  filterPatients();
+  document.getElementById('searchInput').focus();
+}
+
+// Автофокус на поле поиска при загрузке
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('searchInput').focus();
+  
+  // Добавляем обработчик для быстрого поиска при вводе
+  const searchInput = document.getElementById('searchInput');
+  let searchTimeout;
+  
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(filterPatients, 300); // Задержка 300ms
+  });
+});
+</script>
