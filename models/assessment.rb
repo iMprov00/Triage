@@ -54,24 +54,75 @@ class Assessment < ActiveRecord::Base
     ]
   }
 
+    # Динамическое вычисление приоритета
   def calculate_priority
     (1..5).each do |priority|
-      if PRIORITY_CONDITIONS[priority].any? { |condition| condition.call(self) }
+      conditions = PriorityCondition.for_priority(priority).active
+      if meets_conditions?(conditions)
         return priority
       end
     end
     5 # по умолчанию
   end
-
-  # Вспомогательные методы (заглушки, нужно доработать)
-  def symptomatic?
-    # Здесь можно проверить наличие симптомов, например, головная боль, нарушение зрения и т.д.
-    # Пока заглушка
-    false
+  
+  private
+  
+  def meets_conditions?(conditions)
+    return false if conditions.empty?
+    
+    conditions.group_by(&:logical_operator).each do |operator, group|
+      case operator
+      when 'and'
+        return false unless group.all? { |condition| check_condition(condition) }
+      when 'or'
+        return true if group.any? { |condition| check_condition(condition) }
+      else
+        # По умолчанию AND
+        return false unless group.all? { |condition| check_condition(condition) }
+      end
+    end
+    
+    true
   end
-
-  def uterine_scar?
-    # Заглушка: нужно хранить информацию о рубце на матке
-    false
+  
+  def check_condition(condition)
+    value = send(condition.parameter_code)
+    compare_values(value, condition.operator, condition.value)
+  end
+  
+  def compare_values(actual, operator, expected)
+    case operator
+    when '=='
+      actual == convert_value(expected, actual.class)
+    when '!='
+      actual != convert_value(expected, actual.class)
+    when '>'
+      actual > convert_value(expected, actual.class)
+    when '<'
+      actual < convert_value(expected, actual.class)
+    when '>='
+      actual >= convert_value(expected, actual.class)
+    when '<='
+      actual <= convert_value(expected, actual.class)
+    when 'contains'
+      actual.to_s.include?(expected.to_s)
+    when 'starts_with'
+      actual.to_s.start_with?(expected.to_s)
+    else
+      false
+    end
+  end
+  
+  def convert_value(value, target_class)
+    case target_class.name
+    when 'Integer'
+      value.to_i
+    when 'Float'
+      value.to_f
+    when 'TrueClass', 'FalseClass'
+      value.downcase == 'true'
+    else
+      value
+    end
   end
 end

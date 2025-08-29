@@ -1,0 +1,63 @@
+/* Кастомные стили для конкретных элементов */
+
+/* Стили для статусов */
+.status-badge {
+    padding: 0.35em 0.65em;
+    font-size: 0.875em;
+    font-weight: 600;
+    border-radius: 0.375rem;
+}
+
+/* Стили для иконок */
+.icon-with-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Стили для панелей действий */
+.action-panel {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    margin-bottom: 1.5rem;
+}
+
+/* Стили для заголовков */
+.section-title {
+    color: #2c3e50;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Стили для алертов */
+.custom-alert {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+/* Стили для модальных окон */
+.modal-content {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.modal-header {
+    border-bottom: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Стили для навигационных табов */
+.nav-tabs .nav-link {
+    border-radius: 0.375rem 0.375rem 0 0;
+    font-weight: 500;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}

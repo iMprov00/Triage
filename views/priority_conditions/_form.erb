@@ -1,0 +1,139 @@
+<% if @condition.errors.any? %>
+  <div class="alert alert-danger">
+    <h5>Ошибки:</h5>
+    <ul>
+      <% @condition.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="mb-3">
+      <label class="form-label">Уровень приоритета *</label>
+      <select class="form-select" name="condition[priority_level]" required>
+        <% (1..5).each do |level| %>
+          <option value="<%= level %>" <%= 'selected' if @condition.priority_level == level %>>
+            Приоритет <%= level %>
+          </option>
+        <% end %>
+      </select>
+    </div>
+  </div>
+  
+  <div class="col-md-5">
+    <div class="mb-3">
+      <label class="form-label">Параметр *</label>
+      <select class="form-select" name="condition[parameter_code]" required>
+        <option value="">Выберите параметр</option>
+        <% @parameters.each do |param| %>
+          <option value="<%= param.code_name %>" 
+                  data-type="<%= param.data_type %>"
+                  <%= 'selected' if @condition.parameter_code == param.code_name %>>
+            <%= param.name %> (<%= param.code_name %>)
+          </option>
+        <% end %>
+      </select>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="mb-3">
+      <label class="form-label">Оператор *</label>
+      <select class="form-select" name="condition[operator]" id="operator-select" required>
+        <option value="">Выберите оператор</option>
+        <option value="==" <%= 'selected' if @condition.operator == '==' %>>Равно (==)</option>
+        <option value="!=" <%= 'selected' if @condition.operator == '!=' %>>Не равно (!=)</option>
+        <option value=">" <%= 'selected' if @condition.operator == '>' %>>Больше (>)</option>
+        <option value="<" <%= 'selected' if @condition.operator == '<' %>>Меньше (<)</option>
+        <option value=">=" <%= 'selected' if @condition.operator == '>=' %>>Больше или равно (>=)</option>
+        <option value="<=" <%= 'selected' if @condition.operator == '<=' %>>Меньше или равно (<=)</option>
+        <option value="contains" <%= 'selected' if @condition.operator == 'contains' %>>Содержит</option>
+        <option value="starts_with" <%= 'selected' if @condition.operator == 'starts_with' %>>Начинается с</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="mb-3">
+      <label class="form-label">Значение *</label>
+      <input type="text" class="form-control" name="condition[value]" value="<%= @condition.value %>" required>
+      <small class="form-text text-muted" id="value-help">
+        Введите значение для сравнения
+      </small>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="mb-3">
+      <label class="form-label">Логический оператор</label>
+      <select class="form-select" name="condition[logical_operator]">
+        <option value="">AND (по умолчанию)</option>
+        <option value="and" <%= 'selected' if @condition.logical_operator == 'and' %>>AND</option>
+        <option value="or" <%= 'selected' if @condition.logical_operator == 'or' %>>OR</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="col-md-3">
+    <div class="mb-3">
+      <label class="form-label">Позиция</label>
+      <input type="number" class="form-control" name="condition[position]" value="<%= @condition.position || 1 %>">
+    </div>
+  </div>
+</div>
+
+<div class="mb-3 form-check">
+  <input type="checkbox" class="form-check-input" name="condition[active]" value="true" <%= 'checked' if @condition.active != false %>>
+  <label class="form-check-label">Активное условие</label>
+</div>
+
+<div class="d-flex gap-2">
+  <button type="submit" class="btn btn-primary">
+    <i class="bi bi-check-circle me-2"></i>
+    Сохранить
+  </button>
+  <a href="/admin/conditions" class="btn btn-secondary">Отмена</a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const parameterSelect = document.querySelector('select[name="condition[parameter_code]"]');
+  const operatorSelect = document.getElementById('operator-select');
+  const valueHelp = document.getElementById('value-help');
+  
+  function updateOperatorOptions() {
+    const selectedOption = parameterSelect.options[parameterSelect.selectedIndex];
+    const dataType = selectedOption ? selectedOption.getAttribute('data-type') : '';
+    
+    // Показываем/скрываем операторы в зависимости от типа данных
+    Array.from(operatorSelect.options).forEach(option => {
+      if (option.value) {
+        if (dataType === 'string') {
+          option.style.display = ['contains', 'starts_with', '==', '!='].includes(option.value) ? '' : 'none';
+        } else if (dataType === 'boolean') {
+          option.style.display = ['==', '!='].includes(option.value) ? '' : 'none';
+        } else {
+          option.style.display = '';
+        }
+      }
+    });
+    
+    // Обновляем подсказку
+    if (dataType === 'boolean') {
+      valueHelp.textContent = 'Введите true или false';
+    } else if (dataType === 'integer' || dataType === 'float') {
+      valueHelp.textContent = 'Введите числовое значение';
+    } else {
+      valueHelp.textContent = 'Введите значение для сравнения';
+    }
+  }
+  
+  parameterSelect.addEventListener('change', updateOperatorOptions);
+  updateOperatorOptions(); // Инициализация
+});
+</script>
